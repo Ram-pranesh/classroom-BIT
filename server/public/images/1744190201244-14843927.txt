@@ -1,0 +1,21 @@
+College Code	College Name	Branch Code	Branch Name	OC	BC	MBC
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	TX	TEXTILE TECHNOLOGY	141.5	126.5	105
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	FD	FOOD TECHNOLOGY	168.5	149	158
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	FT	FASHION TECHNOLOGY	145.5	138.5	131.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	IT	INFORMATION TECHNOLOGY	187.666667	185	177
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	MC	MECHATRONICS	171	162.5	153
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	ME	MECHANICAL ENGINEERING	170.5	163	139
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	SE	Information Science and Engineering	179.5	177	160
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	AD	ARTIFICIAL INTELLIGENCE AND DATA SCIENCE	186.5	183.5	180
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	AG	AGRICULTURAL ENGINEERING	169	150.5	134.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	AL	Artificial Intelligence and Machine Learning	182.5	179.5	176.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	BM	BIO MEDICAL ENGINEERING	177	163.5	165.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	BT	BIOTECHNOLOGY	174.4	156.5	163.755
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	CB	COMPUTER SCIENCE AND BUSINESS SYSTEM	184.5	183	166.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	CD	COMPUTER SCIENCE AND DESIGN	180.405	177.5	162.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	CE	CIVIL ENGINEERING	157	140	148.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	CS	COMPUTER SCIENCE AND ENGINEERING	190	187.5	182.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	CT	COMPUTER TECHNOLOGY	181	177.5	169.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	EC	ELECTRONICS AND COMMUNICATION ENGINEERING	185	182.5	174.955
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	EE	ELECTRICAL AND ELECTRONICS ENGINEERING	180.5	177	168.5
+2702	Bannari Amman Institute of Technology (Autonomous), Sathyamangalam, Erode District 638401	EI	ELECTRONICS AND INSTRUMENTATION ENGINEERING	176.5	172.5	167
