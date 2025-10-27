@@ -1,0 +1,24 @@
+﻿version: "3.8"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile 
+    image: rampranesh/classroom-client:latest   
+    container_name: classroom-client
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: rampranesh/classroom-server:latest   
+    container_name: classroom-server
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./server/.env
+    restart: unless-stopped
