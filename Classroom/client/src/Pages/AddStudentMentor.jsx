@@ -1,9 +1,8 @@
 import axios from 'axios';
 const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import { Trash2 } from 'lucide-react';
 import MentorNav from '../Components/MentorNav'; // Adjust path based on your project structure
 
@@ -282,12 +281,11 @@ const styles = `
 `;
 const AddStudentMentor = () => {
   const { classId } = useParams();
-  const effectRan = useRef(false);
   const [students, setStudents] = useState([]);
   const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [notification, setNotification] = useState(null);
+  const [isLoading] = useState(false);
+  const [error] = useState(null);
+  const [notification] = useState(null);
 
   // Placeholder class data (simulating backend response)
   const classData = { ClassName: 'Mentor Class' };

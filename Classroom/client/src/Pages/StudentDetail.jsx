@@ -1,7 +1,7 @@
 // StudentDetailsMentor.jsx
 import React, { useEffect, useState } from 'react';
 const defaultDp = "https://ui-avatars.com/api/?name=Student&background=ddd&color=555";
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import MentorNav from '../Components/MentorNav';
 import axios from 'axios';
 const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
@@ -580,7 +580,6 @@ const StudentDetailsMentor = () => {
   const [previewData, setPreviewData] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   const [studentPhotos, setStudentPhotos] = useState({}); // Changed from userPhoto to studentPhotos
-  const navigate = useNavigate();
   const { classId } = useParams();
   const location = useLocation();
 
@@ -645,7 +644,7 @@ const StudentDetailsMentor = () => {
       } else {
         alert('No achievement data found for this student.');
       }
-    } catch (err) {
+    } catch {
       alert('No achievement data found for this student.');
     }
   };

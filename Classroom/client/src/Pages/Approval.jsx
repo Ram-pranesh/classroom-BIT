@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import MentorNav from '../Components/MentorNav';
 const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
@@ -100,16 +100,16 @@ const Approval = () => {
   const [leaveData, setLeaveData] = useState([]);
 
   // Custom sorting: Pending > Approved > Declined
-  const sortLeaves = (leaves) => {
+  const sortLeaves = useCallback((leaves) => {
     const statusOrder = { Pending: 0, Approved: 1, Declined: 2 };
     return leaves.sort((a, b) => {
       const statusA = a.status || 'Pending';
       const statusB = b.status || 'Pending';
       return (statusOrder[statusA] ?? 3) - (statusOrder[statusB] ?? 3);
     });
-  };
+  }, []);
 
-  const fetchLeaveData = async () => {
+  const fetchLeaveData = useCallback(async () => {
     try {
   const response = await fetch(`${BaseUrl}/api/approval`);
       if (!response.ok) throw new Error('Failed to fetch leave data');
@@ -119,11 +119,11 @@ const Approval = () => {
     } catch (error) {
       console.error('Error fetching leave data:', error);
     }
-  };
+  }, [sortLeaves]);
 
   useEffect(() => {
     fetchLeaveData();
-  }, []);
+  }, [fetchLeaveData]);
 
   const handleStatusUpdate = async (id, status) => {
     try {

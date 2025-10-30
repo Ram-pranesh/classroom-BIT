@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Upload, Plus, Trash2, X } from 'lucide-react'; // Import X icon for removing files
 const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
@@ -962,21 +962,8 @@ const Achievements = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
 
-  // Fetch data on mount
-  useEffect(() => {
-  const userEmail = localStorage.getItem('email'); // Use email as userEmail
-  if (!userEmail) return;
-  fetch(`${BaseUrl}/api/achievements?userEmail=${encodeURIComponent(userEmail)}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data && data.achievement) {
-        setFormData(prev => deepMerge(prev, data.achievement));
-      }
-    });
-}, []);
-
   // Helper function for deep merge
-  function deepMerge(target, source) {
+  const deepMerge = useCallback((target, source) => {
     for (const key in source) {
       if (
         source[key] &&
@@ -991,7 +978,20 @@ const Achievements = () => {
       }
     }
     return { ...target };
-  }
+  }, []);
+
+  // Fetch data on mount
+  useEffect(() => {
+    const userEmail = localStorage.getItem('email'); // Use email as userEmail
+    if (!userEmail) return;
+    fetch(`${BaseUrl}/api/achievements?userEmail=${encodeURIComponent(userEmail)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.achievement) {
+          setFormData(prev => deepMerge(prev, data.achievement));
+        }
+      });
+  }, [deepMerge]);
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
@@ -1312,18 +1312,6 @@ const handleSubmit = async () => {
 
   const skills = formData.skills.skills ? formData.skills.skills.split(',').map(skill => skill.trim()) : [];
   const languages = formData.languages.language ? formData.languages.language.split(',').map(lang => lang.trim()) : [];
-
-  // When user edits and clicks "Save"
-const handleSave = async () => {
-  const userEmail = localStorage.getItem('email');
-  // Collect all updated fields in 'data'
-  const data = { userEmail, ...allAchievementFields }; // allAchievementFields = your state
-  await fetch(`${BaseUrl}/api/achievements`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-};
 
   return (
     <>

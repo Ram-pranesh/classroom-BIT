@@ -337,7 +337,7 @@ const QuizUser = () => {
         const quizResponse = await classGet(`/quizes/quiz/${id}`);
         setClassData(classResponse.data.classData);
         setQuizzes(quizResponse.data.quizzes || []);
-      } catch (error) {
+      } catch {
         toast.error('Failed to load data.');
       } finally {
         setIsLoading(false);
@@ -405,7 +405,7 @@ const QuizUser = () => {
     try {
       await classPost(`/quizes/quiz/submit/${activeQuiz._id}`, { questionIndex: currentQuestion.index, answer });
       toast.success('Answer submitted');
-    } catch (error) {
+    } catch {
       toast.error('Failed to submit answer');
     }
   };
