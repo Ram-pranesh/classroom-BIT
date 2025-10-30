@@ -4,12 +4,22 @@ import io from 'socket.io-client';
 import SecondNavUs from '../Components/SecondNavUs';
 import { classGet, classPost, getUser } from '../services/Endpoint';
 import toast from 'react-hot-toast';
-const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
-const socket = io(BaseUrl, {
+
+// For production with nginx proxy, connect to same origin
+// For development, use the full backend URL
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL || 'http://10.70.2.41:5000';
+const isProduction = import.meta.env.PROD;
+const socketUrl = isProduction ? window.location.origin : BaseUrl;
+
+console.log('QuizUser - Connecting to Socket.IO at:', socketUrl, '(isProduction:', isProduction, ')');
+
+const socket = io(socketUrl, {
   transports: ['websocket', 'polling'],
   reconnection: true,
   reconnectionAttempts: 5,
   reconnectionDelay: 1000,
+  autoConnect: true,
+  path: '/socket.io/',
 });
 
 // const socket = io('http://localhost:8000', {

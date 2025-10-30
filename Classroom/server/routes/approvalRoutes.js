@@ -44,7 +44,7 @@
 
 import express from 'express';
 import Leave from '../models/leave.js';
-import MentorStudent from '../models/mentorStudent.js'; // Importing MentorStudent model
+import MentorStudent from '../models/mentorstudent.js'; // Importing MentorStudent model
 
 const router = express.Router();
 
