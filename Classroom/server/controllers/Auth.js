@@ -17,9 +17,10 @@ const validateEmailDomain = (email) => {
 // Function to determine role based on email
 const determineRole = (email) => {
   const superAdminEmails = [
+    'ram@bitsathy.ac.in',
     'svj@bitsathy.ac.in',
     'surya@bitsathy.ac.in',
-    'harisastha@bitsathy.ac.in'   
+    'harisastha@bitsathy.ac.in'  
   ];
   if (superAdminEmails.includes(email.toLowerCase())) {
     return 'super admin';
