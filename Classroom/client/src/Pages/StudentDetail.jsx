@@ -578,6 +578,7 @@ const StudentDetailsMentor = () => {
   const [students, setStudents] = useState([]);
   const [previewData, setPreviewData] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [studentPhotos, setStudentPhotos] = useState({}); // Changed from userPhoto to studentPhotos
   const navigate = useNavigate();
   const { classId } = useParams();
   const location = useLocation();
@@ -585,7 +586,51 @@ const StudentDetailsMentor = () => {
   useEffect(() => {
     const students = JSON.parse(localStorage.getItem('students')) || [];
     setStudents(students);
+    
+    // Fetch photos for all students
+    students.forEach(student => {
+      fetchStudentPhoto(student.email);
+    });
   }, [location]);
+
+  // Fetch individual student's photo
+  const fetchStudentPhoto = async (email) => {
+    if (!email) return;
+    
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/achievements?userEmail=${encodeURIComponent(email)}`
+      );
+      
+      if (!response.ok) {
+        console.log('No achievement data found for', email);
+        return;
+      }
+      
+      const data = await response.json();
+      console.log('Achievement data for', email, ':', data);
+      
+      if (data?.achievement?.personalDetails?.photo) {
+        const photo = data.achievement.personalDetails.photo;
+        let photoUrl = null;
+        
+        if (typeof photo === 'string' && photo.startsWith('data:')) {
+          photoUrl = photo;
+        } else if (photo.data && photo.contentType) {
+          photoUrl = `data:${photo.contentType};base64,${photo.data}`;
+        }
+        
+        if (photoUrl) {
+          setStudentPhotos(prev => ({
+            ...prev,
+            [email]: photoUrl
+          }));
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching photo for', email, ':', error);
+    }
+  };
 
   // Preview button logic (fetch achievement data and show modal)
   const handlePreview = async (email) => {
@@ -605,9 +650,30 @@ const StudentDetailsMentor = () => {
   };
 
   // Helper functions for rendering resume
-  const photoUrl = previewData?.personalDetails?.photo
-    ? URL.createObjectURL(previewData.personalDetails.photo)
-    : null;
+  const handlePhotoDisplay = (photo) => {
+    if (!photo) {
+      return 'https://via.placeholder.com/150'; // Default placeholder
+    }
+
+    // If photo is already a base64 data URL
+    if (typeof photo === 'string' && photo.startsWith('data:')) {
+      return photo;
+    }
+
+    // If photo has data and contentType properties (from MongoDB)
+    if (photo.data && photo.contentType) {
+      return `data:${photo.contentType};base64,${photo.data}`;
+    }
+
+    // If photo is a Blob or File object
+    if (photo instanceof Blob || photo instanceof File) {
+      return URL.createObjectURL(photo);
+    }
+
+    // Fallback to placeholder
+    return 'https://via.placeholder.com/150';
+  };
+
   const skills = previewData?.skills?.skills
     ? previewData.skills.skills.split(',').map(skill => skill.trim())
     : [];
@@ -656,7 +722,14 @@ const StudentDetailsMentor = () => {
           <div className="student-detail-grid">
             {students.map((student, idx) => (
               <div className="student-detail-card" key={idx}>
-                <img src={defaultDp} alt="Default DP" className="student-dp" />
+                <img 
+                  src={studentPhotos[student.email] || defaultDp} 
+                  alt="Student DP" 
+                  className="student-dp"
+                  onError={(e) => {
+                    e.target.src = defaultDp;
+                  }}
+                />
                 <div
                   className="student-name"
                   style={{
@@ -691,7 +764,9 @@ const StudentDetailsMentor = () => {
               <div className="resume-header">
                 <h1>{previewData.personalDetails?.name || 'Your Name'}</h1>
                 <h2>Professional Profile</h2>
-                {photoUrl && <img src={photoUrl} alt="Profile" className="resume-photo" />}
+                {handlePhotoDisplay(previewData.personalDetails?.photo) && (
+                  <img src={handlePhotoDisplay(previewData.personalDetails?.photo)} alt="Profile" className="resume-photo" />
+                )}
                 <div className="resume-contact">
                   <p>{previewData.personalDetails?.phoneNumber || '+123-456-7890'}</p>
                   <p>{previewData.personalDetails?.email || 'your.email@example.com'}</p>

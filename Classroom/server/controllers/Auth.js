@@ -19,7 +19,7 @@ const determineRole = (email) => {
   const superAdminEmails = [
     'svj@bitsathy.ac.in',
     'surya@bitsathy.ac.in',
-    'harisastha@bitsathy.ac.in'
+    'harisastha@bitsathy.ac.in'   
   ];
   if (superAdminEmails.includes(email.toLowerCase())) {
     return 'super admin';

@@ -139,6 +139,18 @@ const entrepreneurshipSchema = new mongoose.Schema(
 const AchievementSchema = new mongoose.Schema(
   {
     _id: String, // userEmail
+    personalDetails: {
+      name: String,
+      email: String,
+      phoneNumber: String,
+      githubUrl: String,
+      linkedinUrl: String,
+      photo: {
+        data: Buffer,
+        contentType: String,
+        filename: String,
+      },
+    },
     academicDetails: [academicDetailSchema],
     paperPresentations: [paperPresentationSchema],
     placement: [placementSchema],

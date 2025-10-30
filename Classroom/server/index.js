@@ -13,7 +13,7 @@ import FacultyClassRoutes from "./routes/faculty.js";
 import leaveRoute from "./routes/leaveRoutes.js";
 import ApprovalRoutes from './routes/approvalRoutes.js';
 import mentorStudentRoutes from './routes/mentorstudentRoutes.js';
-import achievementsRouter from './routes/achievements.js';
+import achievementRoutes from './routes/achievements.js';
 import marksRouter from './routes/markroutes.js';
 import { Server } from "socket.io";
 import http from "http";
@@ -83,7 +83,7 @@ app.use("/facultyclass", FacultyClassRoutes);
 app.use('/api/leave', leaveRoute);
 app.use('/api/approval', ApprovalRoutes);
 app.use('/api/mentorstudent', mentorStudentRoutes);
-app.use("/api/achievements", achievementsRouter);
+app.use("/api/achievements", achievementRoutes);
 app.use("/api/marks", marksRouter);
 
 // ✅ Start the server with socket.io

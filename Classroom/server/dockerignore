@@ -1,0 +1,8 @@
+﻿node_modules
+uploads
+uploads/
+.DS_Store
+npm-debug.log
+.env
+.vscode
+.idea

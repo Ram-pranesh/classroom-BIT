@@ -1022,27 +1022,35 @@ const Achievements = () => {
 
   const handleFileChange = (section, field, event, index = null) => {
     const file = event.target.files[0];
-    if (index !== null) {
-      setFormData((prev) => {
-        const updatedEntries = [...prev[section]];
-        updatedEntries[index] = {
-          ...updatedEntries[index],
-          [field]: file,
-        };
-        return {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result; // data:<type>;base64,AAAA...
+      const base64 = result.split(',')[1];
+      const payload = { data: base64, contentType: file.type, filename: file.name };
+      if (index !== null) {
+        setFormData((prev) => {
+          const updatedEntries = [...prev[section]];
+          updatedEntries[index] = {
+            ...updatedEntries[index],
+            [field]: payload,
+          };
+          return {
+            ...prev,
+            [section]: updatedEntries,
+          };
+        });
+      } else {
+        setFormData((prev) => ({
           ...prev,
-          [section]: updatedEntries,
-        };
-      });
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [section]: {
-          ...prev[section],
-          [field]: file,
-        },
-      }));
-    }
+          [section]: {
+            ...prev[section],
+            [field]: payload,
+          },
+        }));
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeFile = (section, field, index = null) => {
@@ -1289,7 +1297,17 @@ const handleSubmit = async () => {
     window.html2pdf().set(opt).from(element).save();
   };
 
-  const photoUrl = formData.personalDetails.photo ? URL.createObjectURL(formData.personalDetails.photo) : null;
+  const photoUrl = (() => {
+    const p = formData.personalDetails.photo;
+    if (!p) return null;
+    if (p.data && p.contentType) return `data:${p.contentType};base64,${p.data}`;
+    // fallback for File objects (older behavior)
+    try {
+      return URL.createObjectURL(p);
+    } catch {
+      return null;
+    }
+  })();
 
   const skills = formData.skills.skills ? formData.skills.skills.split(',').map(skill => skill.trim()) : [];
   const languages = formData.languages.language ? formData.languages.language.split(',').map(lang => lang.trim()) : [];

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import MentorNav from '../Components/MentorNav'; // Adjust path based on your project structure
+import MentorNav from '../Components/MentorNav';
 
 const styles = `
   /* Page Background */
@@ -171,10 +171,67 @@ const StudentAchives = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
-  // Load students from localStorage on mount
+  // Load students from localStorage and fetch their achievement photos
   useEffect(() => {
-    const savedStudents = JSON.parse(localStorage.getItem('students')) || [];
-    setStudents(savedStudents);
+    const fetchStudentData = async () => {
+      const savedStudents = JSON.parse(localStorage.getItem('students')) || [];
+      
+      const studentsWithPhotos = await Promise.all(
+        savedStudents.map(async (student) => {
+          try {
+            const response = await fetch(
+              `http://localhost:8000/api/achievements?userEmail=${encodeURIComponent(student.email)}`
+            );
+            
+            if (!response.ok) {
+              console.log(`No achievement data for ${student.email}`);
+              return student;
+            }
+            
+            const data = await response.json();
+            console.log('Achievement data for', student.email, ':', data);
+            
+            // Check if achievement photo exists
+            if (data?.achievement?.personalDetails?.photo) {
+              const photo = data.achievement.personalDetails.photo;
+              console.log('Photo data found for', student.email);
+              
+              // Handle different photo formats
+              let photoUrl = null;
+              
+              if (typeof photo === 'string' && photo.startsWith('data:')) {
+                // Already a base64 data URL
+                photoUrl = photo;
+                console.log('Using base64 URL for', student.email);
+              } else if (photo.data && photo.contentType) {
+                // MongoDB binary data
+                photoUrl = `data:${photo.contentType};base64,${photo.data}`;
+                console.log('Converted binary data to base64 for', student.email);
+              }
+              
+              if (photoUrl) {
+                return {
+                  ...student,
+                  photo: photoUrl
+                };
+              }
+            } else {
+              console.log('No photo in achievement data for', student.email);
+            }
+            
+            return student;
+          } catch (error) {
+            console.error('Error fetching achievement data for student:', student.email, error);
+            return student;
+          }
+        })
+      );
+      
+      console.log('Final students with photos:', studentsWithPhotos);
+      setStudents(studentsWithPhotos);
+    };
+
+    fetchStudentData();
   }, []);
 
   const handleStudentClick = (student) => {
@@ -202,7 +259,15 @@ const StudentAchives = () => {
           ) : selectedStudent ? (
             <div className="selected-student-container">
               <div className="student-card">
-                <img src={selectedStudent.photo} alt={selectedStudent.name} className="student-photo" />
+                <img 
+                  src={selectedStudent.photo || 'https://via.placeholder.com/150'} 
+                  alt={selectedStudent.name} 
+                  className="student-photo"
+                  onError={(e) => {
+                    console.error('Failed to load image for', selectedStudent.name);
+                    e.target.src = 'https://via.placeholder.com/150';
+                  }}
+                />
                 <div className="student-name">{selectedStudent.name}</div>
                 <div className="student-email">{selectedStudent.email}</div>
                 <div className="student-mobile">{selectedStudent.mobile}</div>
@@ -219,7 +284,15 @@ const StudentAchives = () => {
                   className="student-card"
                   onClick={() => handleStudentClick(student)}
                 >
-                  <img src={student.photo} alt={student.name} className="student-photo" />
+                  <img 
+                    src={student.photo || 'https://via.placeholder.com/150'} 
+                    alt={student.name} 
+                    className="student-photo"
+                    onError={(e) => {
+                      console.error('Failed to load image for', student.name);
+                      e.target.src = 'https://via.placeholder.com/150';
+                    }}
+                  />
                   <div className="student-name">{student.name}</div>
                   <div className="student-email">{student.email}</div>
                   <div className="student-mobile">{student.mobile}</div>
