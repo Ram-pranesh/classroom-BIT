@@ -5,6 +5,9 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile 
+      args:
+        - VITE_SERVER_APP_URL=http://10.70.2.41:5000
+        - VITE_GOOGLE_CLIENT_ID=690691222870-8fmk6jvbsp5mkujc28s1tivqvqito4be.apps.googleusercontent.com
     image: rampranesh/classroom-client:latest   
     container_name: classroom-client
     ports:
@@ -18,7 +21,7 @@ services:
     image: rampranesh/classroom-server:latest   
     container_name: classroom-server
     ports:
-      - "8000:8000"
+      - "5000:5000"
     env_file:
       - ./server/.env
     restart: unless-stopped

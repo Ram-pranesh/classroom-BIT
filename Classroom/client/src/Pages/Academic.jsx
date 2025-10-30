@@ -1,6 +1,7 @@
 // MarksTable.jsx
 import React, { useState } from "react";
 import axios from "axios";
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
 const MarksTable = () => {
   const [marksData, setMarksData] = useState([]);
@@ -24,7 +25,7 @@ const MarksTable = () => {
       const markTypeStr =
         markType === "internal" ? "Internal" : "External"; // Capitalized to match DB
 
-      const res = await axios.get("http://localhost:8000/api/marks", {
+      const res = await axios.get(`${BaseUrl}/api/marks`, {
         params: {
           semester: semesterNum,
           marktype: markTypeStr, // lowercase "t"

@@ -38,7 +38,7 @@ import Academic from './Pages/Academic'; // Added import
 import Achievements from './Pages/Achievements'; // Added import
 import StudentDetailsMentor from './Pages/StudentDetail'; // Added import
 
-const GOOGLE_CLIENT_ID = import.meta.env.REACT_APP_GOOGLE_CLIENT_ID || "your-google-client-id-here";
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "690691222870-8fmk6jvbsp5mkujc28s1tivqvqito4be.apps.googleusercontent.com";
 
 class ErrorBoundary extends Component {
   state = { error: null };

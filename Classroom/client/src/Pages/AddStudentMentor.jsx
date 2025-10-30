@@ -1,4 +1,5 @@
 import axios from 'axios';
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -299,7 +300,7 @@ const AddStudentMentor = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/mentorstudent');
+      const response = await axios.get(`${BaseUrl}/api/mentorstudent`);
       setStudents(response.data); // Expected to include name, email, etc.
       localStorage.setItem('students', JSON.stringify(response.data)); // <-- Add this line
     } catch (error) {
@@ -313,7 +314,7 @@ const AddStudentMentor = () => {
     if (!email) return;
 
     try {
-      await axios.post('http://localhost:8000/api/mentorstudent', { email });
+      await axios.post(`${BaseUrl}/api/mentorstudent`, { email });
       setEmail('');
       fetchStudents(); // Refresh after adding
     } catch (error) {
@@ -324,7 +325,7 @@ const AddStudentMentor = () => {
 
   const handleDelete = async (emailToDelete) => {
     try {
-      await axios.delete(`http://localhost:8000/api/mentorstudent/${emailToDelete}`);
+      await axios.delete(`${BaseUrl}/api/mentorstudent/${emailToDelete}`);
       fetchStudents(); // Refresh after delete
     } catch (error) {
       console.error('Error deleting student:', error);

@@ -16,7 +16,7 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 
 # Expose the port your server uses (update if different)
-EXPOSE 8000
+EXPOSE 5000
 
 # Start the server
 CMD ["node", "index.js"]

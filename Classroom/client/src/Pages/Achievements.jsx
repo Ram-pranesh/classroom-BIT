@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, Plus, Trash2, X } from 'lucide-react'; // Import X icon for removing files
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
 const styles = `
   /* Container for the Achievements page */
@@ -965,7 +966,7 @@ const Achievements = () => {
   useEffect(() => {
   const userEmail = localStorage.getItem('email'); // Use email as userEmail
   if (!userEmail) return;
-  fetch(`http://localhost:8000/api/achievements?userEmail=${encodeURIComponent(userEmail)}`)
+  fetch(`${BaseUrl}/api/achievements?userEmail=${encodeURIComponent(userEmail)}`)
     .then(res => res.json())
     .then(data => {
       if (data && data.achievement) {
@@ -1105,7 +1106,7 @@ const removeSectionEntry = async (section, index) => {
   const userEmail = localStorage.getItem('email');
   if (!userEmail) return;
   const res = await fetch(
-    `http://localhost:8000/api/achievements/${encodeURIComponent(userEmail)}/${section}/${index}`,
+    `${BaseUrl}/api/achievements/${encodeURIComponent(userEmail)}/${section}/${index}`,
     { method: 'DELETE' }
   );
   if (res.ok) {
@@ -1264,7 +1265,7 @@ const handleSubmit = async () => {
   // Clean the form data before sending
   const cleanedData = cleanFormData(formData);
   const data = { userEmail, ...cleanedData };
-  const response = await fetch('http://localhost:8000/api/achievements', {
+  const response = await fetch(`${BaseUrl}/api/achievements`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -1317,7 +1318,7 @@ const handleSave = async () => {
   const userEmail = localStorage.getItem('email');
   // Collect all updated fields in 'data'
   const data = { userEmail, ...allAchievementFields }; // allAchievementFields = your state
-  await fetch('http://localhost:8000/api/achievements', {
+  await fetch(`${BaseUrl}/api/achievements`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),

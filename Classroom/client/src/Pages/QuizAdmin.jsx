@@ -5,6 +5,13 @@ import SecondNav from '../Components/SecondNav';
 import { classGet, classPost, downloadFile } from '../services/Endpoint';
 import toast from 'react-hot-toast';
 import { FaTrash } from 'react-icons/fa';
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
+const socket = io(BaseUrl, {
+  transports: ['websocket', 'polling'],
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000,
+});
 
 // const socket = io('http://localhost:8000', {
 //   transports: ['websocket', 'polling'],
@@ -883,7 +890,7 @@ const QuizAdmin = () => {
               <div className="quiz-card__image">
                 {quizzes.find(q => q._id === controlQuizId)?.questions[currentQuestionIndex]?.image ? (
                   <img
-                    src={`http://localhost:8000/images/${quizzes.find(q => q._id === controlQuizId).questions[currentQuestionIndex].image}`}
+                    src={`${BaseUrl}/images/${quizzes.find(q => q._id === controlQuizId).questions[currentQuestionIndex].image}`}
                     alt="Question"
                     onError={(e) => console.error('Image load error:', e.target.src)}
                   />

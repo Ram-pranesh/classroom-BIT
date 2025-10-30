@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MentorNav from '../Components/MentorNav';
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
 const styles = `
   /* Page Background */
@@ -180,7 +181,7 @@ const StudentAchives = () => {
         savedStudents.map(async (student) => {
           try {
             const response = await fetch(
-              `http://localhost:8000/api/achievements?userEmail=${encodeURIComponent(student.email)}`
+              `${BaseUrl}/api/achievements?userEmail=${encodeURIComponent(student.email)}`
             );
             
             if (!response.ok) {

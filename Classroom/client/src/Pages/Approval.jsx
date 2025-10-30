@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MentorNav from '../Components/MentorNav';
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
 const styles = `
   /* single consolidated page-container */
@@ -110,7 +111,7 @@ const Approval = () => {
 
   const fetchLeaveData = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/approval`);
+  const response = await fetch(`${BaseUrl}/api/approval`);
       if (!response.ok) throw new Error('Failed to fetch leave data');
       const data = await response.json();
       const sortedData = sortLeaves(data);
@@ -126,7 +127,7 @@ const Approval = () => {
 
   const handleStatusUpdate = async (id, status) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/approval/${id}`, {
+      const response = await fetch(`${BaseUrl}/api/approval/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
 const Leave = () => {
   const [email, setEmail] = useState('');
@@ -23,7 +24,7 @@ const Leave = () => {
 
   const fetchUserLeaves = async (userEmail) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/leave?email=${userEmail}`);
+      const res = await fetch(`${BaseUrl}/api/leave?email=${userEmail}`);
       if (res.ok) {
         const data = await res.json();
         setLeaves(data);
@@ -46,7 +47,7 @@ const Leave = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/leave', {
+      const response = await fetch(`${BaseUrl}/api/leave`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +72,7 @@ const Leave = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this leave request?')) return;
     try {
-      const res = await fetch(`http://localhost:8000/api/leave/${id}`, {
+      const res = await fetch(`${BaseUrl}/api/leave/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {

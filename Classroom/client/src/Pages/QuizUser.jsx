@@ -4,6 +4,13 @@ import io from 'socket.io-client';
 import SecondNavUs from '../Components/SecondNavUs';
 import { classGet, classPost, getUser } from '../services/Endpoint';
 import toast from 'react-hot-toast';
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
+const socket = io(BaseUrl, {
+  transports: ['websocket', 'polling'],
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000,
+});
 
 // const socket = io('http://localhost:8000', {
 //   transports: ['websocket', 'polling'],
@@ -452,7 +459,7 @@ const QuizUser = () => {
             <div className="quiz-card__image">
               {currentQuestion?.image ? (
                 <img
-                  src={`http://localhost:8000/images/${currentQuestion.image}`}
+                  src={`${BaseUrl}/images/${currentQuestion.image}`}
                   alt="Question"
                   onError={(e) => console.error('Image load error:', e.target.src)}
                 />

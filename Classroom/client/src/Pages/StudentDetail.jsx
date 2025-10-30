@@ -4,6 +4,7 @@ const defaultDp = "https://ui-avatars.com/api/?name=Student&background=ddd&color
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import MentorNav from '../Components/MentorNav';
 import axios from 'axios';
+const BaseUrl = import.meta.env.VITE_SERVER_APP_URL;
 
 const styles = `
   /* Page Background */
@@ -599,7 +600,7 @@ const StudentDetailsMentor = () => {
     
     try {
       const response = await fetch(
-        `http://localhost:8000/api/achievements?userEmail=${encodeURIComponent(email)}`
+        `${BaseUrl}/api/achievements?userEmail=${encodeURIComponent(email)}`
       );
       
       if (!response.ok) {
@@ -636,7 +637,7 @@ const StudentDetailsMentor = () => {
   const handlePreview = async (email) => {
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/achievements?userEmail=${encodeURIComponent(email)}`
+        `${BaseUrl}/api/achievements?userEmail=${encodeURIComponent(email)}`
       );
       if (res.data && res.data.achievement) {
         setPreviewData(res.data.achievement);
