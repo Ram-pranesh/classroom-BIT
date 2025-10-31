@@ -861,6 +861,25 @@ const Navbar = () => {
   const firstLetter = userName.charAt(0).toUpperCase();
   const classroomName = useSelector((state) => state.classroom?.name) || "Classroom";
 
+  // Helper function to determine if classroom is active
+  const isClassroomActive = () => {
+    const path = window.location.pathname.toLowerCase();
+    if (userRole === 'user') {
+      return path === '/home' || 
+             (path.startsWith('/home/classstudents') && !path.includes('/student-profile'));
+    }
+    return path === '/home';
+  };
+
+  // Helper function to determine if student section is active
+  const isStudentActive = () => {
+    const path = window.location.pathname.toLowerCase();
+    if (userRole === 'user') {
+      return path.includes('/home/student-profile');
+    }
+    return path.includes('/admin/students') || path.includes('/studentprofile');
+  };
+
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
@@ -1109,7 +1128,7 @@ const Navbar = () => {
             <nav className="mobile-nav-links">
               <div className="top-links">
                 <div
-                  className={`mobile-nav-item ${window.location.pathname === "/home" ? "active" : ""}`}
+                  className={`mobile-nav-item ${isClassroomActive() ? "active" : ""}`}
                   onClick={() => {
                     navigate("/home");
                     setIsMobileSidebarOpen(false);
@@ -1155,6 +1174,19 @@ const Navbar = () => {
                       <span className="mobile-nav-text">Mentor</span>
                     </div>
                   </>
+                )}
+                {userRole === 'user' && (
+                  <div
+                    className={`mobile-nav-item ${isStudentActive() ? 'active' : ''}`}
+                    onClick={() => {
+                      navigate('/home/student-profile/leave');  // Add default sub-route
+                      setIsMobileSidebarOpen(false);
+                    }}
+                    data-tooltip="Student"
+                  >
+                    <Users size={20} className="mobile-nav-icon" />
+                    <span className="mobile-nav-text">Student</span>
+                  </div>
                 )}
               </div>
               <div className="bottom-links">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { post } from "../services/Endpoint";
 import { useDispatch } from "react-redux";
@@ -136,6 +136,19 @@ const Login = () => {
       });
     }, 100);
   };
+
+  // Add this configuration for Google Sign-In
+  useEffect(() => {
+    // Configure Cross-Origin-Opener-Policy headers
+    const meta = document.createElement('meta');
+    meta.httpEquiv = 'Cross-Origin-Opener-Policy';
+    meta.content = 'same-origin-allow-popups';
+    document.head.appendChild(meta);
+
+    return () => {
+      document.head.removeChild(meta);
+    };
+  }, []);
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
