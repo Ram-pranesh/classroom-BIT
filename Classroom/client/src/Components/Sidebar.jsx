@@ -244,6 +244,26 @@ const Sidebar = () => {
   const studentActive =
     path.startsWith('/admin/students') || path.includes('/studentprofile');
 
+  // For user role: Classroom should only be active if NOT on student-profile
+  const isClassroomActive = () => {
+    if (userRole === 'user') {
+      // For users, classroom is active only if we're at /home exactly or on class-related routes
+      // but NOT on student-profile
+      return path === '/home' || 
+             (path.startsWith('/home/classstudents') && !path.includes('/student-profile'));
+    }
+    // For admins, use the existing isActive logic
+    return isActive('/home');
+  };
+
+  // For user role: Student section should be active when on student-profile routes
+  const isStudentActive = () => {
+    if (userRole === 'user') {
+      return path.includes('/home/student-profile');
+    }
+    return studentActive;
+  };
+
   // Keep the shared sidebar-hovered state in sync with local open/hover state.
   useEffect(() => {
     setIsSidebarHovered(Boolean(isOpen || isHovered));
@@ -329,7 +349,7 @@ const Sidebar = () => {
 
         <nav className="nav-links">
           <div className="top-links">
-            <Link to="/home" className={`nav-item ${isActive("/home") ? "active" : ""}`}>
+            <Link to="/home" className={`nav-item ${isClassroomActive() ? "active" : ""}`}>
               <Home size={20} className="nav-icon" />
               <span className="nav-text">Classroom</span>
             </Link>
@@ -356,6 +376,16 @@ const Sidebar = () => {
                   <span className="nav-text">Mentor</span>
                 </Link>
               </>
+            )}
+            {userRole === 'user' && (
+              <Link
+                to="/home/student-profile/leave"  // Add default sub-route
+                className={`nav-item ${isStudentActive() ? 'active' : ''}`}
+                data-tooltip="Student"
+              >
+                <Users size={20} className="nav-icon" />
+                <span className="nav-text">Student</span>
+              </Link>
             )}
           </div>
           <div className="bottom-links">

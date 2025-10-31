@@ -81,7 +81,8 @@ const AppContent = () => {
     const previousPath = sessionStorage.getItem('previousPath');
     const currentPath = location.pathname;
 
-    console.log('Current Path:', currentPath); // Debug navigation
+    // Comment out or remove debug logs
+    // console.log('Current Path:', currentPath);
 
     sessionStorage.setItem('previousPath', currentPath);
 
@@ -92,14 +93,14 @@ const AppContent = () => {
       currentPath !== '/' &&
       currentPath !== '/register'
     ) {
-      console.log('Showing BootIntro');
+      // console.log('Showing BootIntro');
       setShowBootIntro(true);
       document.body.style.overflow = 'hidden';
     }
   }, [location, user, hasBootIntroShown, setShowBootIntro]);
 
   const handleBootIntroComplete = () => {
-    console.log('BootIntro Complete');
+    // console.log('BootIntro Complete');
     setShowBootIntro(false);
     setHasBootIntroShown(true);
     localStorage.setItem('hasBootIntroShown', 'true');
@@ -129,6 +130,22 @@ const AppContent = () => {
           }
         >
           <Route index element={<Home />} />
+          
+          {/* Add student profile route for regular users */}
+          <Route 
+            path='student-profile' 
+            element={
+              <ProtectedRoute allowedRoles={['user']}>
+                <StudentProfile />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Navigate to="leave" replace />} />
+            <Route path="leave" element={<Leave />} />
+            <Route path="academic" element={<Academic />} />
+            <Route path="achievements" element={<Achievements />} />
+          </Route>
+          
           <Route
             path='classstudents/:id'
             element={

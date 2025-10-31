@@ -501,12 +501,16 @@ const Home = () => {
           setClasses(sortedClass);
         } else {
           setClasses([]);
-          // toast.error(studentResponse.data.message || "No classes assigned to you");
+          console.log(studentResponse.data.message || "No classes assigned to you");
         }
       }
     } catch (error) {
       console.error("Error fetching classes:", error);
-      if (error.message === 'Unauthorized: Please log in again.') {
+      if (error.response?.status === 404) {
+        // Handle 404 specifically for students with no classes
+        setClasses([]);
+        console.log("No classes found for this student");
+      } else if (error.message === 'Unauthorized: Please log in again.') {
         localStorage.removeItem('token');
         dispatch(RemoveUser());
         toast.error("Session expired. Please log in again.");

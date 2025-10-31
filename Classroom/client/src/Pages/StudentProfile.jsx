@@ -1,6 +1,7 @@
 import React from 'react';
-import { useParams, useLocation, Outlet } from 'react-router-dom'; // Added Outlet import
+import { useParams, useLocation, Outlet } from 'react-router-dom';
 import StudentProfileNav from '../Components/StudentProfileNav';
+import { useSelector } from 'react-redux';
 
 const styles = `
   /* Page Container */
@@ -71,13 +72,20 @@ const styles = `
 const StudentProfile = () => {
   const { classId } = useParams();
   const location = useLocation();
+  const user = useSelector((state) => state.auth.user);
+  const userRole = user?.role;
+  
   const currentPath = location.pathname.toLowerCase();
-  const basePath = `/mentor/classadmin/${classId}/studentprofile`;
+  
+  // Determine base path based on user role
+  const basePath = userRole === 'user' 
+    ? '/home/student-profile' 
+    : `/mentor/classadmin/${classId}/studentprofile`;
 
   let pageTitle = 'Leave Apply';
-  if (currentPath === `${basePath}/academic`) {
+  if (currentPath.includes('academic')) {
     pageTitle = 'Academic';
-  } else if (currentPath === `${basePath}/achievements`) {
+  } else if (currentPath.includes('achievements')) {
     pageTitle = 'Achievements';
   }
 
@@ -90,7 +98,7 @@ const StudentProfile = () => {
             <StudentProfileNav classId={classId} />
           </div>
           {/* <h2 className="class-name">{pageTitle}</h2> */}
-          <Outlet /> {/* Added Outlet to render child routes */}
+          <Outlet />
         </div>
       </div>
     </>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const styles = `
   .page-container {
@@ -46,10 +47,19 @@ const styles = `
 `;
 
 const StudentProfileNav = ({ classId }) => {
-  console.log("Class ID in StudentProfileNav:", classId);
+  // Remove or comment out the console.log
+  // console.log("Class ID in StudentProfileNav:", classId);
+  
   const location = useLocation();
   const currentPath = location.pathname.toLowerCase();
-  const basePath = `/mentor/classadmin/${classId}/studentprofile`; // Updated basePath to include /studentprofile
+  
+  // Get user role from Redux instead of localStorage for consistency
+  const user = useSelector((state) => state.auth.user);
+  const userRole = user?.role || 'user';
+  
+  const basePath = userRole === 'user' 
+    ? '/home/student-profile' 
+    : `/mentor/classadmin/${classId}/studentprofile`;
 
   return (
     <>
@@ -57,19 +67,19 @@ const StudentProfileNav = ({ classId }) => {
       <div className="nav-bar">
         <Link
           to={`${basePath}/leave`}
-          className={`nav-tab ${currentPath === `${basePath}/leave` ? 'active' : ''}`}
+          className={`nav-tab ${currentPath.includes('/leave') ? 'active' : ''}`}
         >
           Leave Apply
         </Link>
         <Link
           to={`${basePath}/academic`}
-          className={`nav-tab ${currentPath === `${basePath}/academic` ? 'active' : ''}`}
+          className={`nav-tab ${currentPath.includes('/academic') ? 'active' : ''}`}
         >
           Academic
         </Link>
         <Link
           to={`${basePath}/achievements`}
-          className={`nav-tab ${currentPath === `${basePath}/achievements` ? 'active' : ''}`}
+          className={`nav-tab ${currentPath.includes('/achievements') ? 'active' : ''}`}
         >
           Achievements
         </Link>
